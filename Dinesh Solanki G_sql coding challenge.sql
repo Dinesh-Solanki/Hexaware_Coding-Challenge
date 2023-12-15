@@ -2,7 +2,7 @@
  --                       Coding Challenges: CareerHub, The Job Board              
 
 
---1 Provide a SQL script that initializes the database for the Job Board scenario “CareerHub”. 
+--1 Provide a SQL script that initializes the database for the Job Board scenario â€œCareerHubâ€. 
 Create database CareerHub;
 use CareerHub;
 
@@ -207,7 +207,7 @@ JOIN Applications ap ON a.ApplicantID = ap.ApplicantID
 JOIN Jobs j ON ap.JobID = j.JobID
 JOIN Companies c ON j.CompanyID = c.CompanyID
 WHERE c.Location = 'Chennai'
-AND DATEDIFF(YEAR, a.Experience, GETDATE()) >= 3;
+AND a.Experience >= 3;
 	
  -- 11.Retrieve a list of distinct job titles with salaries between $60,000 and $80,000.
 
