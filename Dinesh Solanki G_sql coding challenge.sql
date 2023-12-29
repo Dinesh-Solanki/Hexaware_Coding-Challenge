@@ -233,7 +233,7 @@ SELECT C.CrimeID, C.IncidentType, V.VictimID, V.Name AS VictimName, S.SuspectID,
 FROM Crime C
 JOIN Victim V ON V.CrimeID = C.CrimeID
 JOIN Suspect S ON S.CrimeID = C.CrimeID
-WHERE S.Name IN (SELECT Name FROM Victim WHERE CrimeID <> C.CrimeID AND Name IS NOT NULL);
+WHERE S.Name IN (SELECT Name FROM Victim);
 
 
 --14. Retrieve all incidents along with victim and suspect details.
