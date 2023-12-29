@@ -1,341 +1,285 @@
---                                   Dinesh Solanki G   
- --                       Coding Challenges: CareerHub, The Job Board              
+/*                                    Dinesh Solanki G   
+                        Coding Challenges: Crime Management                           */
 
 
---1 Provide a SQL script that initializes the database for the Job Board scenario “CareerHub”. 
-Create database CareerHub;
-use CareerHub;
+--Creating Database
+Create Database CrimeManagement
 
---2. Create tables for Companies, Jobs, Applicants and Applications. 
--- Companies table
-CREATE TABLE Companies (
-    CompanyID INT PRIMARY KEY,
-    CompanyName VARCHAR(50),
-    Location VARCHAR(100)
+Use CrimeManagement
+
+--Creating Entity
+CREATE TABLE Crime (
+ CrimeID INT PRIMARY KEY,
+ IncidentType VARCHAR(255),
+ IncidentDate DATE,
+ Location VARCHAR(255),
+ Description TEXT,
+ Status VARCHAR(20)
+)
+
+CREATE TABLE Victim (
+ VictimID INT PRIMARY KEY,
+ CrimeID INT,
+ Name VARCHAR(255),
+ ContactInfo VARCHAR(255),
+ Injuries VARCHAR(255),
+ FOREIGN KEY (CrimeID) REFERENCES Crime(CrimeID)
 );
 
--- Jobs table
-CREATE TABLE Jobs (
-    JobID INT PRIMARY KEY,
-    CompanyID INT,
-    JobTitle VARCHAR(50),
-    JobDescription TEXT,
-    JobLocation VARCHAR(100),
-    Salary DECIMAL,
-    JobType VARCHAR(50),
-    PostedDate DATETIME,
+
+CREATE TABLE Suspect (
+ SuspectID INT PRIMARY KEY,
+ CrimeID INT,
+ Name VARCHAR(255),
+ Description TEXT,
+ CriminalHistory TEXT,
+ FOREIGN KEY (CrimeID) REFERENCES Crime(CrimeID)
 );
 
--- Applicants table
-CREATE TABLE Applicants (
-    ApplicantID INT PRIMARY KEY,
-    FirstName VARCHAR(25),
-    LastName VARCHAR(25),
-    Email VARCHAR(50),
-    Phone VARCHAR(12),
-    Resume TEXT
-);
+--Inserting Values Into the Tables
 
--- Applications table
-CREATE TABLE Applications (
-    ApplicationID INT PRIMARY KEY,
-    JobID INT,
-    ApplicantID INT,
-    ApplicationDate DATETIME,
-    CoverLetter TEXT,
-);
-
---3. Define appropriate primary keys, foreign keys, and constraints. 
-
--- Add foreign key to Jobs table
-ALTER TABLE Jobs
-ADD CONSTRAINT FK_Jobs_Companies FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID);
-
--- Add foreign key to Applications table referencing Jobs table
-ALTER TABLE Applications
-ADD CONSTRAINT FK_Applications_Jobs FOREIGN KEY (JobID) REFERENCES Jobs(JobID);
-
--- Add foreign key to Applications table referencing Applicants table
-ALTER TABLE Applications
-ADD CONSTRAINT FK_Applications_Applicants FOREIGN KEY (ApplicantID) REFERENCES Applicants(ApplicantID);
-
-
--- Inserting data into Companies table
-INSERT INTO Companies
+INSERT INTO Crime (CrimeID, IncidentType, IncidentDate, Location, Description, Status)
 VALUES
-    (1, 'Hexaware', 'Chennai'),
-    (2, 'Capgemini', 'Bangalore'),
-    (3, 'Vedantu', 'Mumbai'),
-    (4, 'Google', 'Bangalore'),
-    (5, 'Microsoft', 'Bangalore'),
-    (6, 'Amazon', 'Pune'),
-    (7, 'Adobe', 'Delhi'),
-    (8, 'Netflix', 'Jaipur');
-    
+ (1, 'Robbery', '2023-09-15', '123 Main St, Cityville', 'Armed robbery at a convenience store', 'Open'),
+ (2, 'Homicide', '2023-09-20', '456 Elm St, Townsville', 'Investigation into a murder case', 'Under Investigation'),
+ (3, 'Theft', '2023-09-10', '789 Oak St, Villagetown', 'Shoplifting incident at a mall', 'Closed'),
+ (4, 'Assault', '2023-02-15', '2nd block Rajajinagar', 'Physical assault in a bar', 'Open'),
+ (5, 'Fraud', '2023-05-20', '30 Rajankune', 'Credit card fraud', 'Closed'),
+ (6, 'Robbery', '2023-06-12', '303 church St', 'Robbery at a park', 'Open'),
+ (7, 'Homicide', '2023-07-18', '404 Yelankha St', 'murder case', 'Open'),
+ (8, 'Assault', '2023-08-25', '505 St', 'Assault at park', 'Open'),
+ (9, 'Domestic Violence', '2023-09-30', '606 Spruce St', 'Domestic dispute turned violent', 'Under Investigation'),
+ (10, 'Theft', '2023-10-15', '707 Fir St', 'Shoplifting at a retail store', 'Closed');
 
--- Inserting data into Jobs table
-INSERT INTO Jobs 
+
+INSERT INTO Victim (VictimID, CrimeID, Name, ContactInfo, Injuries)
 VALUES
-    (1, 1, 'Software Engineer', 'Develop software applications', 'Chennai', 85000.00, 'Full-time', '2023-01-01 08:00:00'),
-    (2, 7, 'Marketing Specialist', 'Implement marketing strategies', 'Delhi', 62000.00, 'Part-time', '2023-01-02 10:30:00'),
-    (3, 3, 'Data Analyst', 'Analyze data', 'Mumbai', 65000.00, 'Full-time', '2023-01-03 12:00:00'),
-    (4, 2, 'UX/UI Designer', 'Design user interfaces', 'Bangalore', 85000.00, 'Full-time', '2023-01-04 14:30:00'),
-    (5, 6, 'Graphic Designer', 'Create visual concepts', 'Pune', 50000.00, 'Part-time', '2023-01-05 09:45:00'),
-    (6, 5, 'Software Tester', 'Test software applications', 'Bangalore', 55000.00, 'Full-time', '2023-01-06 11:15:00'),
-    (7, 4, 'Financial Analyst', 'Conduct financial analysis', 'Bangalore', 72000.00, 'Full-time', '2023-01-07 13:30:00'),
-    (8, 8, 'Customer Support', 'Assist customers', 'Jaipur', 50000.00, 'Part-time', '2023-01-08 15:45:00');
-    
+ (1, 1, 'John Doe', 'johndoe@example.com', 'Minor injuries'),
+ (2, 2, 'Jane Smith', 'janesmith@example.com', 'Deceased'),
+ (3, 3, 'Alice Johnson', 'alicejohnson@example.com', 'None'),
+ (4, 4, 'Dinesh', 'dinesh@gmail', 'Fatal gunshot wound'),
+ (5, 5, 'Ravi Doe', 'ravi@gmail', 'Financial loss'),
+ (6, 6, 'MDoe Brown', 'mdoe@gmail.com', 'Missing child'),
+ (7, 7, 'Cammon Green', 'char@gmail.com', 'None'),
+ (8, 8, 'David Miller', 'miller@gmail', 'None'),
+ (9, 9, 'David Warner', 'david@gmail', 'Minor injuries'),
+ (10, 10, 'GauravDoe ', 'gaurav@gmail', 'None');
 
--- Inserting data into Applicants table
-INSERT INTO Applicants 
+INSERT INTO Suspect (SuspectID, CrimeID, Name, Description, CriminalHistory)
 VALUES
-    (1, 'Dinesh', 'Solanki', 'dineshsg@email.com', '9535905179', 'Resume for Dinesh Solanki'),
-    (2, 'Ashok', 'Rathore', 'ashokrathore@email.com', '2579854126', 'Resume for Ashok rathore'),
-    (3, 'Rohit', 'Singh', 'rohitsingh@email.com', '9856874589', 'Resume for Rohit Singh'),
-    (4, 'Karthik', 'Jha', 'karthik@email.com', '5678901234', 'Resume for Karthik Jha'),
-    (5, 'Akansh', 'Jha', 'akanshjn@email.com', '7890123456', 'Resume for Akansh Jha'),
-    (6, 'Ravi', 'Ujwal', 'raviujwal@email.com', '901-234-5678', 'Resume for Ravi Ujwal'),
-    (7, 'David', 'Miller', 'davidm@email.com', '2259688901', 'Resume for David Miller'),
-    (8, 'Swift', 'Taylor', 'swuifttaylor@email.com', '4561258962', 'Resume for Swift Taylor');
-    
-
--- Inserting data into Applications table
-INSERT INTO Applications 
-VALUES
-    (1, 1, 1, '2023-01-03 12:45:00', 'Cover letter for Software Engineer from Dinesh Solanki'),
-    (2, 2, 2, '2023-01-04 14:20:00', 'Cover letter for Marketing Specialist from Ashok rathore'),
-    (3, 3, 3, '2023-01-05 15:30:00', 'Cover letter for Data Analyst from Rohit Singh'),
-    (4, 4, 4, '2023-01-06 16:45:00', 'Cover letter for UX/UI Designer from Karthik Jha'),
-    (5, 5, 5, '2023-01-07 18:00:00', 'Cover letter for Graphic Designer from Akansh Jha'),
-    (6, 6, 6, '2023-01-08 19:15:00', 'Cover letter for Software Tester from Laura Miller'),
-    (7, 7, 7, '2023-01-09 20:30:00', 'Cover letter for Financial Analyst from Ravi Ujwal'),
-    (8, 7, 8, '2023-01-10 21:45:00', 'Cover letter for Financial Analyst from Swift Taylor');
-    
---4 Ensure the script handles potential errors, such as if the database or tables already exist.
-   
-   select * from Companies;
-
--- 5.Write an SQL query to count the number of applications received for each job listing in the
---"Jobs" table. Display the job title and the corresponding application count. Ensure that it lists all
---jobs, even if they have no applications  
-
-SELECT
-    J.JobID,
-    J.JobTitle,
-    COUNT(A.ApplicationID) AS ApplicationCount
-FROM
-    Jobs J
-LEFT JOIN
-    Applications A ON J.JobID = A.JobID
-GROUP BY
-    J.JobID, J.JobTitle;
-    
+ (1, 1, 'Robber 1', 'Armed and masked robber', 'Previous robbery convictions'),
+ (2, 2, 'Unknown', 'Investigation ongoing', NULL),
+ (3, 3, 'Suspect 1', 'Shoplifting suspect', 'Prior shoplifting arrests'),
+ (4, 6, 'Unknown', 'Investigation ongoing', NULL),
+ (5, 7, 'Cammon Green', 'Drug trafficking suspect', 'Previous drug offenses'),
+ (6, 9, 'David Warner', 'Domestic violence suspect', 'Previous domestic violence incidents'),
+ (7, 10, 'Cammon Green', 'Theft suspect', 'Previous theft convictions'),
+ (8, 4, 'White', 'Assault suspect', 'Previous assault charges'),
+ (9, 3, 'White', 'Fraud suspect', 'Previous fraud convictions'),
+ (10, 7, 'Cammon Green', 'Vandalism suspect', 'No known criminal history');
  
---6. Develop an SQL query that retrieves job listings from the "Jobs" table within a specified salary
---range. Allow parameters for the minimum and maximum salary values. Display the job title,
---company name, location, and salary for each matching job.
+--Queries
 
-SELECT
-    J.JobTitle,
-    C.CompanyName,
-    J.JobLocation,
-    J.Salary
-FROM
-    Jobs J
-JOIN
-    Companies C ON J.CompanyID = C.CompanyID
-WHERE
-    J.Salary >= 50000
-    AND J.Salary <= 80000;
-    
-    
---7. Write an SQL query that retrieves the job application history for a specific applicant. Allow a
---parameter for the ApplicantID, and return a result set with the job titles, company names, and
---application dates for all the jobs the applicant has applied to.
+--1. Select all open incidents.
+SELECT * FROM Crime
+WHERE status ='Open';
 
-SELECT
-    J.JobTitle,
-    (SELECT CompanyName FROM Companies WHERE CompanyID = J.CompanyID) AS CompanyName,
-    A.ApplicationDate
-FROM
-    Applications A
-JOIN
-    Jobs J ON A.JobID = J.JobID
-WHERE
-    A.ApplicantID = 1;
-    
+--2. Find the total number of incidents.
+SELECT COUNT(*) AS TotalIncidents
+FROM Crime;
 
---8. Create an SQL query that calculates and displays the average salary offered by all companies for
---job listings in the "Jobs" table. Ensure that the query filters out jobs with a salary of zero.
+--3. List all unique incident types.
+SELECT DISTINCT IncidentType
+FROM Crime;
 
-SELECT
-    AVG(Salary) AS AvgSalary
-FROM
-    Jobs
-WHERE
-    Salary > 0;
-    
---9. Write an SQL query to identify the company that has posted the most job listings. Display the
---company name along with the count of job listings they have posted. Handle ties if multiple
---companies have the same maximum count.
+--4. Retrieve incidents that occurred between '2023-09-01' and '2023-09-10'.
+SELECT * FROM Crime
+WHERE IncidentDate BETWEEN '2023-09-01' AND '2023-09-10';
 
-SELECT TOP 1 WITH TIES
-    C.CompanyName,
-    COUNT(J.JobID) AS JobCount
-FROM
-    Companies C
-LEFT JOIN
-    Jobs J ON C.CompanyID = J.CompanyID
-GROUP BY
-    C.CompanyID, C.CompanyName
-ORDER BY
-    JobCount DESC;
-    
---10. Find the applicants who have applied for positions in companies located in 'CityX' and have at
---least 3 years of experience.
-
-ALTER TABLE Applicants
-ADD Experience INT;
-
-UPDATE Applicants
-SET Experience = 4 
-WHERE ApplicantID = 1; 
-
-SELECT DISTINCT a.FirstName, a.LastName
-FROM Applicants a
-JOIN Applications ap ON a.ApplicantID = ap.ApplicantID
-JOIN Jobs j ON ap.JobID = j.JobID
-JOIN Companies c ON j.CompanyID = c.CompanyID
-WHERE c.Location = 'Chennai'
-AND a.Experience >= 3;
-	
- -- 11.Retrieve a list of distinct job titles with salaries between $60,000 and $80,000.
-
-SELECT DISTINCT
-    JobTitle,
-    Salary
-FROM
-    Jobs
-WHERE
-    Salary BETWEEN 60000 AND 80000;
-    
--- 12. Find the jobs that have not received any applications
-
-SELECT
-    J.*
-FROM
-    Jobs J
-LEFT JOIN
-    Applications A ON J.JobID = A.JobID
-WHERE
-    A.ApplicationID IS NULL;
-    
-
---13.Retrieve a list of job applicants along with the companies they have applied to and the positions  they have applied for.
-SELECT a.FirstName ,a.LastName,c.CompanyName ,j.jobTitle FROM Applicants a
-JOIN Applications ap ON a.ApplicantID =ap.ApplicantID
-JOIN Jobs J ON ap.JobID=j.JobID
-JOIN Companies c ON j.CompanyID =c.CompanyID;
-
---14. Retrieve a list of companies along with the count of jobs they have posted, even if they have not  received any applications.
-
-SELECT c.CompanyName ,COUNT(j.JobID) AS JobCount
-FROM Companies c
-LEFT JOIN Jobs j ON c.CompanyID =j.CompanyID
-GROUP BY c.CompanyName;
-
---15. List all applicants along with the companies and positions they have applied for, including those  who have not applied
-
-SELECT a.FirstName , a.LastName ,c.CompanyName ,j.JobTitle
-FROM Applicants a
-LEFT JOIN Applications ap ON a.ApplicantID=ap.ApplicantID
-LEFT JOIN Jobs j ON ap.JobID =j.JobID
-LEFT JOIN Companies c ON j.CompanyID = c.CompanyID;
-
---16. Find companies that have posted jobs with a salary higher than the average salary of all jobs.
-
-SELECT DISTINCT
-    C.CompanyName
-FROM
-    Companies C
-JOIN
-    Jobs J ON C.CompanyID = J.CompanyID
-WHERE
-    J.Salary > (SELECT AVG(Salary) FROM Jobs);
-    
---17. Display a list of applicants with their names and a concatenated string of their city and state.
+--5. List persons involved in incidents in descending order of age.
+--Note : No age attribute is been specified in table so here we will be adding age attribute using alter
+ALTER TABLE Victim
+ADD VAge INT;
 
 
-ALTER TABLE Applicants
-ADD City VARCHAR(50),
-    State VARCHAR(50);
+ALTER TABLE Suspect
+ADD SAge int;
 
-UPDATE Applicants
-SET City = 'Bangalore', State = 'Karnataka'
-WHERE ApplicantID = 1;
+--Adding values of age attribute to suspect and victim table
+UPDATE Victim
+SET VAge=22
+WHERE VictimID=1;
 
-UPDATE Applicants
-SET City = 'Chennai', State = 'TamilNadu'
-WHERE ApplicantID = 2;
+UPDATE Victim
+SET VAge=37
+WHERE VictimID=2;
 
-UPDATE Applicants
-SET City = 'Bangalore', State = 'Karnataka'
-WHERE ApplicantID = 3;
+UPDATE Victim
+SET VAge=47
+WHERE VictimID=3;
 
-UPDATE Applicants
-SET City = 'Mumbai', State = 'Maharashtra'
-WHERE ApplicantID = 3;
+UPDATE Victim
+SET VAge=35
+WHERE VictimID=4;
+
+UPDATE Victim
+SET VAge=35
+WHERE VictimID=5;
+
+UPDATE Victim 
+SET Vage=30
+WHERE VictimID=6;
+
+UPDATE Victim 
+SET Vage=30
+WHERE VictimID=7;
+
+UPDATE Victim 
+SET Vage=30
+WHERE VictimID=8;
+
+UPDATE Victim 
+SET Vage=30
+WHERE VictimID=9;
+
+UPDATE Victim 
+SET Vage=30
+WHERE VictimID=10;
+
+UPDATE Suspect
+SET SAge=35;
+
+UPDATE Suspect
+SET SAge=26
+WHERE SuspectID=1;
+
+UPDATE Suspect
+SET SAge=53
+WHERE SuspectID=2;
+
+UPDATE Suspect
+SET SAge=26
+WHERE SuspectID=3;
+
+UPDATE Suspect
+SET SAge=30
+WHERE SuspectID=4;
+
+Select * from Victim
+Select * from Suspect
+
+SELECT VictimID, Name, VAge
+FROM Victim
+ORDER BY VAge DESC;
+
+SELECT SuspectID, Name, SAge
+FROM Suspect
+ORDER BY SAge DESC;
+
+--6. Find the average age of persons involved in incidents.
+SELECT AVG(VAge) AS AverageAgeVictim
+FROM Victim;
+
+SELECT AVG(SAge) AS AverageAgeSuspect
+FROM Suspect;
 
 
-SELECT
-    ApplicantID,
-    CONCAT(FirstName, ' ', LastName) AS FullName,
-    CONCAT(City, ', ', State) AS Location
-FROM
-    Applicants; 
-    
---18. Retrieve a list of jobs with titles containing either 'Developer' or 'Engineer'.
+--7. List incident types and their counts, only for open cases.
+Select IncidentType, Count(CrimeID) as counts
+from Crime
+where Status = 'Open'
+Group by IncidentType
 
-SELECT
-    *
-FROM
-    Jobs
-WHERE
-    JobTitle LIKE '%Developer%'
-    OR JobTitle LIKE '%Engineer%';    
+--8. Find persons with names containing 'Doe'.
+SELECT Name
+FROM Victim
+WHERE Name LIKE '%Doe%'
+UNION 
+SELECT Name
+FROM Suspect
+WHERE Name LIKE '%Doe%';
 
- --19. Retrieve a list of applicants and the jobs they have applied for, including those who have not
---applied and jobs without applicants.
+--9. Retrieve the names of persons involved in open cases and closed cases.
+SELECT V.VictimID, V.Name, S.SuspectID, S.Name, Status
+FROM Victim V
+JOIN Crime C ON C.CrimeID = V.CrimeID
+JOIN Suspect S ON S.CrimeID = C.CrimeID
+WHERE Status IN('Open','Closed');
 
-SELECT
-    A.FirstName,
-    A.LastName,
-    J.JobTitle
-FROM
-    Applicants A
-LEFT JOIN 
-    Applications AP ON A.ApplicantID = AP.ApplicantID
-LEFT JOIN 
-    Jobs J ON AP.JobID = J.JobID;
+--10. List incident types where there are persons aged 30 or 35 involved.
+SELECT DISTINCT IncidentType
+FROM Crime C
+JOIN Victim V ON C.CrimeID = V.CrimeID
+JOIN Suspect S ON C.CrimeID = S.CrimeID
+WHERE V.VAge IN (30, 35) OR S.SAge IN (30, 35);
 
---20. List all combinations of applicants and companies where the company is in a specific city and the
---applicant has more than 2 years of experience. For example: city=Chennai 
+--11. Find persons involved in incidents of the same type as 'Robbery'.
+SELECT V.VictimID, V.Name AS VictimName, S.SuspectID, S.Name AS SuspectName
+FROM Victim V
+JOIN Crime C ON C.CrimeID = V.CrimeID
+JOIN Suspect S ON S.CrimeID = C.CrimeID
+WHERE C.IncidentType = 'Robbery';
 
-SELECT
-    A.ApplicantID,
-    A.FirstName,
-    A.LastName,
-    A.Experience,
-    C.CompanyID,
-    C.CompanyName,
-    C.Location AS CompanyLocation
-FROM
-    Applicants A
-CROSS JOIN
-    Companies C
-WHERE
-    C.Location = 'Chennai'
-    AND A.Experience > 2;    
-    
-    
-    
+--12. List incident types with more than one open case.
+SELECT IncidentType, COUNT(*) AS OpenCaseCount
+FROM Crime
+WHERE Status = 'Open'
+GROUP BY IncidentType
+HAVING COUNT(*) > 1;
+
+
+--13. List all incidents with suspects whose names also appear as victims in other incidents.
+SELECT C.CrimeID, C.IncidentType, V.VictimID, V.Name AS VictimName, S.SuspectID, S.Name AS SuspectName
+FROM Crime C
+JOIN Victim V ON V.CrimeID = C.CrimeID
+JOIN Suspect S ON S.CrimeID = C.CrimeID
+WHERE S.Name IN (SELECT Name FROM Victim WHERE CrimeID <> C.CrimeID AND Name IS NOT NULL);
+
+
+--14. Retrieve all incidents along with victim and suspect details.
+SELECT C.CrimeID, C.IncidentType, C.IncidentDate, C.Location, C.Description, C.Status,
+V.VictimID, V.Name AS VictimName, V.ContactInfo, V.Injuries,
+S.SuspectID, S.Name AS SuspectName, S.Description AS SuspectDescription, S.CriminalHistory
+FROM Crime C
+LEFT JOIN Victim V ON C.CrimeID = V.CrimeID
+LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID;
+
+
+--15. Find incidents where the suspect is older than any victim.
+SELECT C.IncidentType, V.VAge, S.SAge 
+FROM Crime C
+LEFT JOIN Victim V ON C.CrimeID = V.CrimeID
+LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID
+WHERE S.SAge > V.VAge;
+
+--16. Find suspects involved in multiple incidents.
+SELECT S.SuspectID, S.Name, COUNT(C.CrimeID) AS IncidentCount
+FROM Suspect S
+JOIN Crime C ON S.CrimeID=C.CrimeID
+GROUP BY S.SuspectID, S.Name
+HAVING COUNT(C.CrimeID) > 1;
+--Note: no such data is available for he above query)
+
+
+--17. List incidents with no suspects involved.
+SELECT C.*
+FROM Crime C
+LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID
+WHERE S.SuspectID IS NULL;
+
+--18. List all cases where at least one incident is of type 'Homicide' and all other incidents are of type 'Robbery'.
+SELECT C.*
+FROM Crime C
+WHERE IncidentType in ('Homicide' ,'Robbery');
+
+--19. Retrieve a list of all incidents and the associated suspects, showing suspects for each incident, or 'No Suspect' if there are none.
+SELECT C.*, ISNULL(S.Name, 'No Suspect') AS SuspectName
+FROM Crime C
+LEFT JOIN Suspect S ON C.CrimeID = S.CrimeID AND S.Name <> 'Unknown';
+
+--20. List all suspects who have been involved in incidents with incident types 'Robbery' or 'Assault'
+SELECT S.*
+FROM Suspect S
+JOIN Crime C ON S.CrimeID = C.CrimeID
+WHERE C.IncidentType IN ('Robbery', 'Assault');
+
