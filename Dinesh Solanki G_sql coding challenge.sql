@@ -177,11 +177,13 @@ FROM Suspect
 ORDER BY SAge DESC;
 
 --6. Find the average age of persons involved in incidents.
-SELECT AVG(VAge) AS AverageAgeVictim
-FROM Victim;
-
-SELECT AVG(SAge) AS AverageAgeSuspect
-FROM Suspect;
+with average as(
+SELECT AVG(VAge) AS Age
+FROM Victim
+UNION
+SELECT AVG(SAge) 
+FROM Suspect)
+select avg(age) as 'Average age of persons' from average;
 
 
 --7. List incident types and their counts, only for open cases.
